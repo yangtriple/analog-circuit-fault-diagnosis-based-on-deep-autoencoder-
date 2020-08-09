@@ -169,16 +169,16 @@ def showpic(x_test_Dense,y_test,n_w=2,n_c=11):
             ax.scatter(f_show[:,0],f_show[:,1],f_show[:,2],c=col_list[label],marker=shape_list[label],s = 5)
         plt.savefig(r'D:\Cadence\SPB_Data\analog circuit code\fault diagnosis\autoencoder\pic'+img_name)        
         plt.show()
-def TBAE(x_train,x_test,y_train_sc,y_test_sc,p_ae=1,p_c=10,class_n=11,hidden_layer=[50,30],epoc=100,batch_s=50, 
+def TBAE(x_train,x_test,y_train_sc,y_test_sc,dropout_rate=0.2,p_ae=1,p_c=10,class_n=11,hidden_layer=[50,30],epoc=100,batch_s=50, 
          lr_a=0.6,decay_a=0.2,verbose=1):
     input_ae=Input(shape=(x_train.shape[1],))
+    d=dropout(0.2)(input_ae)
 #编码
-    encoded=Dense(hidden_layer[0],activation='relu',name='encoded_hidden1')(input_ae)
+    encoded=Dense(hidden_layer[0],activation='relu',name='encoded_hidden1')(d)
     encoder_output=Dense(hidden_layer[1],activation='relu',name='encoded_hidden2')(encoded)
 #解码
     decoded1=Dense(hidden_layer[0],activation='relu',name='decoded_hidden1')(encoder_output)
-    #decoded1=Dense(hidden_layer[1],activation='relu',name='decoded_hidden1')(encoder_output)
-    #decoded2=Dense(hidden_layer[0],activation='relu',name='decoded_hidden2')(decoded1)
+
     decoded_output=Dense(x_train.shape[1],activation='relu',name='decoded_output')(decoded1)
     ca=Dense(class_n,activation='softmax',name='class_out')(encoder_output)
     mymodel=Model(inputs=input_ae,outputs=[decoded_output,ca])

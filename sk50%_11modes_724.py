@@ -28,18 +28,12 @@ y_test_sc=to_categorical(y_test,num_classes=11)
 print('training label size：',y_train_sc.shape)
 print('testing label size:',y_test_sc.shape)
 
-'''
-add noise to input signals
-'''
-noise_factor = 0.5
-x_train_noisy = x_train + noise_factor * np.random.normal(loc=0.0, scale=1.0, size=x_train.shape) 
-x_test_noisy = x_test + noise_factor * np.random.normal(loc=0.0, scale=1.0, size=x_test.shape) 
 
 
 ''''
 自编码器模型
 '''
-mymodel=TBAE(x_train_noisy,x_test,y_train_sc,y_test_sc,class_n=11,hidden_layer=[50,30],epoc=200,batch_s=100, 
+mymodel=TBAE(x_train,x_test,y_train_sc,y_test_sc,class_n=11,hidden_layer=[50,30],epoc=200,batch_s=100, 
          lr_a=0.001,decay_a=1e-6)
 
 
